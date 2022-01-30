@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Service.module.business.stuExperimentProjectReport.dao.StuExperimentProjectReportDao">
+
+    <resultMap id="StuExperimentProjectReportVO" type="Service.module.business.stuExperimentProjectReport.domain.vo.StuExperimentProjectReportVO"></resultMap>
+    <resultMap id="StuExperimentProjectReportExcelVO" type="Service.module.business.stuExperimentProjectReport.domain.vo.StuExperimentProjectReportExcelVO"></resultMap>
+
+
+    <select id="queryByPage" resultMap="StuExperimentProjectReportVO">
+        select
+          id,
+          project_id,
+          name,
+          course_id,
+          class_id,
+          report_id,
+          report_uploader_name,
+          deadline,
+          iffinish,
+          purpose,
+          principle,
+          content,
+          summary,
+          grade,
+          correct_teacher_id
+        from r_stu_experiment_project_report
+        <where>
+            <if test="queryDTO.id != null">
+                AND id = #{queryDTO.id}
+            </if>
+            <if test="queryDTO.projectId != null">
+                AND project_id = #{queryDTO.projectId}
+            </if>
+            <if test="queryDTO.name != null and queryDTO.name != ''">
+                AND INSTR(name,#{queryDTO.name})
+            </if>
+            <if test="queryDTO.courseId != null">
+                AND course_id = #{queryDTO.courseId}
+            </if>
+            <if test="queryDTO.classId != null">
+                AND class_id = #{queryDTO.classId}
+            </if>
+            <if test="queryDTO.reportId != null">
+                AND report_id = #{queryDTO.reportId}
+            </if>
+            <if test="queryDTO.reportUploaderName != null and queryDTO.reportUploaderName != ''">
+                AND INSTR(report_uploader_name,#{queryDTO.reportUploaderName})
+            </if>
+            <if test="queryDTO.deadline != null and queryDTO.deadline != ''">
+                AND INSTR(deadline,#{queryDTO.deadline})
+            </if>
+            <if test="queryDTO.iffinish != null and queryDTO.iffinish != ''">
+                AND INSTR(iffinish,#{queryDTO.iffinish})
+            </if>
+            <if test="queryDTO.purpose != null and queryDTO.purpose != ''">
+                AND INSTR(purpose,#{queryDTO.purpose})
+            </if>
+            <if test="queryDTO.principle != null and queryDTO.principle != ''">
+                AND INSTR(principle,#{queryDTO.principle})
+            </if>
+            <if test="queryDTO.content != null and queryDTO.content != ''">
+                AND INSTR(content,#{queryDTO.content})
+            </if>
+            <if test="queryDTO.summary != null and queryDTO.summary != ''">
+                AND INSTR(summary,#{queryDTO.summary})
+            </if>
+            <if test="queryDTO.grade != null and queryDTO.grade != ''">
+                AND grade = #{queryDTO.grade}
+            </if>
+            <if test="queryDTO.correctTeacherId != null">
+                AND correct_teacher_id = #{queryDTO.correctTeacherId}
+            </if>
+
+            <if test="queryDTO.createTimeBegin != null ">
+                AND create_time &gt;= #{queryDTO.createTimeBegin}
+            </if>
+            <if test="queryDTO.createTimeEnd != null ">
+                AND create_time &lt;= #{queryDTO.createTimeEnd}
+            </if>
+
+            <if test="queryDTO.updateTimeBegin != null ">
+                AND update_time &gt;= #{queryDTO.updateTimeBegin}
+            </if>
+            <if test="queryDTO.updateTimeEnd != null ">
+                AND update_time &lt;= #{queryDTO.updateTimeEnd}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryAllExportData" resultMap="StuExperimentProjectReportExcelVO">
+        select
+           id,
+           project_id,
+           name,
+           course_id,
+           class_id,
+           report_id,
+           report_uploader_name,
+           deadline,
+           iffinish,
+           purpose,
+           principle,
+           content,
+           summary,
+           grade,
+           correct_teacher_id
+        from r_stu_experiment_project_report
+        <where>
+            <if test="queryDTO.id != null">
+                AND id = #{queryDTO.id}
+            </if>
+            <if test="queryDTO.projectId != null">
+                AND project_id = #{queryDTO.projectId}
+            </if>
+            <if test="queryDTO.name != null and queryDTO.name != ''">
+                AND INSTR(name,#{queryDTO.name})
+            </if>
+            <if test="queryDTO.courseId != null">
+                AND course_id = #{queryDTO.courseId}
+            </if>
+            <if test="queryDTO.classId != null">
+                AND class_id = #{queryDTO.classId}
+            </if>
+            <if test="queryDTO.reportId != null">
+                AND report_id = #{queryDTO.reportId}
+            </if>
+            <if test="queryDTO.reportUploaderName != null and queryDTO.reportUploaderName != ''">
+                AND INSTR(report_uploader_name,#{queryDTO.reportUploaderName})
+            </if>
+            <if test="queryDTO.deadline != null and queryDTO.deadline != ''">
+                AND INSTR(deadline,#{queryDTO.deadline})
+            </if>
+            <if test="queryDTO.iffinish != null and queryDTO.iffinish != ''">
+                AND INSTR(iffinish,#{queryDTO.iffinish})
+            </if>
+            <if test="queryDTO.purpose != null and queryDTO.purpose != ''">
+                AND INSTR(purpose,#{queryDTO.purpose})
+            </if>
+            <if test="queryDTO.principle != null and queryDTO.principle != ''">
+                AND INSTR(principle,#{queryDTO.principle})
+            </if>
+            <if test="queryDTO.content != null and queryDTO.content != ''">
+                AND INSTR(content,#{queryDTO.content})
+            </if>
+            <if test="queryDTO.summary != null and queryDTO.summary != ''">
+                AND INSTR(summary,#{queryDTO.summary})
+            </if>
+            <if test="queryDTO.grade != null and queryDTO.grade != ''">
+                AND grade = #{queryDTO.grade}
+            </if>
+            <if test="queryDTO.correctTeacherId != null">
+                AND correct_teacher_id = #{queryDTO.correctTeacherId}
+            </if>
+
+            <if test="queryDTO.createTimeBegin != null ">
+                AND create_time &gt;= #{queryDTO.createTimeBegin}
+            </if>
+            <if test="queryDTO.createTimeEnd != null ">
+                AND create_time &lt;= #{queryDTO.createTimeEnd}
+            </if>
+
+            <if test="queryDTO.updateTimeBegin != null ">
+                AND update_time &gt;= #{queryDTO.updateTimeBegin}
+            </if>
+            <if test="queryDTO.updateTimeEnd != null ">
+                AND update_time &lt;= #{queryDTO.updateTimeEnd}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryBatchExportData" resultMap="StuExperimentProjectReportExcelVO">
+        select
+         id,
+         project_id,
+         name,
+         course_id,
+         class_id,
+         report_id,
+         report_uploader_name,
+         deadline,
+         iffinish,
+         purpose,
+         principle,
+         content,
+         summary,
+         grade,
+         correct_teacher_id
+        from r_stu_experiment_project_report
+        where id in
+        <foreach collection="idList" open="(" close=")" separator="," item="item">
+            #{item}
+        </foreach>
+    </select>
+
+    <delete id="deleteById">
+        delete from r_stu_experiment_project_report where id = #{id}
+    </delete>
+
+    <delete id="deleteByIdList">
+        delete from r_stu_experiment_project_report where id in
+        <foreach collection="idList" open="(" close=")" separator="," item="item">
+            #{item}
+        </foreach>
+    </delete>
+
+</mapper>

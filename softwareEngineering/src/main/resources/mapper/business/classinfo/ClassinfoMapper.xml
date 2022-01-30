@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Service.module.business.classinfo.dao.ClassinfoDao">
+
+    <resultMap id="ClassinfoVO" type="Service.module.business.classinfo.domain.vo.ClassinfoVO"></resultMap>
+    <resultMap id="ClassinfoExcelVO" type="Service.module.business.classinfo.domain.vo.ClassinfoExcelVO"></resultMap>
+
+
+    <select id="queryByPage" resultMap="ClassinfoVO">
+        select
+          class_id,
+          course_id,
+          class_term,
+          schedule_time_id,
+          place
+        from t_classinfo
+        <where>
+            <if test="queryDTO.classId != null">
+                AND class_id = #{queryDTO.classId}
+            </if>
+            <if test="queryDTO.courseId != null">
+                AND course_id = #{queryDTO.courseId}
+            </if>
+            <if test="queryDTO.classTerm != null and queryDTO.classTerm != ''">
+                AND INSTR(class_term,#{queryDTO.classTerm})
+            </if>
+            <if test="queryDTO.scheduleTimeId != null">
+                AND schedule_time_id = #{queryDTO.scheduleTimeId}
+            </if>
+            <if test="queryDTO.place != null and queryDTO.place != ''">
+                AND INSTR(place,#{queryDTO.place})
+            </if>
+
+            <if test="queryDTO.createTimeBegin != null ">
+                AND create_time &gt;= #{queryDTO.createTimeBegin}
+            </if>
+            <if test="queryDTO.createTimeEnd != null ">
+                AND create_time &lt;= #{queryDTO.createTimeEnd}
+            </if>
+
+            <if test="queryDTO.updateTimeBegin != null ">
+                AND update_time &gt;= #{queryDTO.updateTimeBegin}
+            </if>
+            <if test="queryDTO.updateTimeEnd != null ">
+                AND update_time &lt;= #{queryDTO.updateTimeEnd}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryAllExportData" resultMap="ClassinfoExcelVO">
+        select
+           class_id,
+           course_id,
+           class_term,
+           schedule_time_id,
+           place
+        from t_classinfo
+        <where>
+            <if test="queryDTO.classId != null">
+                AND class_id = #{queryDTO.classId}
+            </if>
+            <if test="queryDTO.courseId != null">
+                AND course_id = #{queryDTO.courseId}
+            </if>
+            <if test="queryDTO.classTerm != null and queryDTO.classTerm != ''">
+                AND INSTR(class_term,#{queryDTO.classTerm})
+            </if>
+            <if test="queryDTO.scheduleTimeId != null">
+                AND schedule_time_id = #{queryDTO.scheduleTimeId}
+            </if>
+            <if test="queryDTO.place != null and queryDTO.place != ''">
+                AND INSTR(place,#{queryDTO.place})
+            </if>
+
+            <if test="queryDTO.createTimeBegin != null ">
+                AND create_time &gt;= #{queryDTO.createTimeBegin}
+            </if>
+            <if test="queryDTO.createTimeEnd != null ">
+                AND create_time &lt;= #{queryDTO.createTimeEnd}
+            </if>
+
+            <if test="queryDTO.updateTimeBegin != null ">
+                AND update_time &gt;= #{queryDTO.updateTimeBegin}
+            </if>
+            <if test="queryDTO.updateTimeEnd != null ">
+                AND update_time &lt;= #{queryDTO.updateTimeEnd}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryBatchExportData" resultMap="ClassinfoExcelVO">
+        select
+         class_id,
+         course_id,
+         class_term,
+         schedule_time_id,
+         place
+        from t_classinfo
+        where id in
+        <foreach collection="idList" open="(" close=")" separator="," item="item">
+            #{item}
+        </foreach>
+    </select>
+
+    <delete id="deleteById">
+        delete from t_classinfo where id = #{id}
+    </delete>
+
+    <delete id="deleteByIdList">
+        delete from t_classinfo where id in
+        <foreach collection="idList" open="(" close=")" separator="," item="item">
+            #{item}
+        </foreach>
+    </delete>
+
+</mapper>

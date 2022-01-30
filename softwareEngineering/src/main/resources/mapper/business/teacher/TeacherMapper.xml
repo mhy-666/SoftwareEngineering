@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Service.module.business.teacher.dao.TeacherDao">
+
+    <resultMap id="TeacherVO" type="Service.module.business.teacher.domain.vo.TeacherVO"></resultMap>
+    <resultMap id="TeacherExcelVO" type="Service.module.business.teacher.domain.vo.TeacherExcelVO"></resultMap>
+    <resultMap id="ExperimentProjectEntity" type="Service.module.business.experimentProject.domain.entity.ExperimentProjectEntity"></resultMap>
+    <resultMap id="SelectingEntity" type="Service.module.business.selecting.domain.entity.SelectingEntity"></resultMap>
+    <resultMap id="TeacherExperimentProjectEntity" type="Service.module.business.teacherExperimentProject.domain.entity.TeacherExperimentProjectEntity"></resultMap>
+    <resultMap id="StuExperimentProjectReportEntity" type="Service.module.business.stuExperimentProjectReport.domain.entity.StuExperimentProjectReportEntity"></resultMap>
+    <resultMap id="TeachingEntity" type="Service.module.business.teaching.domain.entity.TeachingEntity"></resultMap>
+    <resultMap id="CourseResourceEntity" type="Service.module.business.courseResource.domain.entity.CourseResourceEntity"></resultMap>
+    <resultMap id="CourseResourcePublishingEntity" type="Service.module.business.courseResourcePublishing.domain.entity.CourseResourcePublishingEntity"></resultMap>
+    <resultMap id="TeacherQueryCourseVO" type="Service.module.business.teacher.domain.vo.TeacherQueryCourseVO"></resultMap>
+
+    <select id="queryProjectDetail" resultMap="TeacherExperimentProjectEntity">
+        select * from r_teacher_experiment_project where course_id=#{queryDTO.courseId} and class_id=#{queryDTO.classId} and id=#{queryDTO.projectId}
+    </select>
+
+    <delete id="closeCourse">
+        delete from t_course where id=#{id};
+    </delete>
+
+    <insert id="addCourse">
+        insert into
+            t_course(id,name,credit,department)
+        values(
+        (select MAX(e.id)+1 from t_course as e),#{queryDTO.name},#{queryDTO.credit},#{queryDTO.department})
+    </insert>
+
+    <insert id="addCourse2">
+        insert into
+            r_teaching(id,course_id,class_id,class_term)
+        values(#{queryDTO.id},(select MAX(e.id) from t_course as e),(select MAX(r.class_id)+1 from r_teaching as r),"2022-1")
+    </insert>
+
+    <insert id="addCourse3">
+        insert into t_classinfo (course_id,class_id,class_term,schedule_time_id,place)
+        VALUES((select MAX(e.id) from t_course as e),(select MAX(r.class_id) from r_teaching as r),"2022-1",1,"济事楼")
+    </insert>
+
+
+    <select id="queryCourse" resultMap="TeacherQueryCourseVO">
+        select t_classinfo.course_id,t_classinfo.class_id,t_classinfo.class_term,t_course.`name`,e_teacher.`name`,t_course.credit,e_teacher.department,t_classinfo.place
+        from t_classinfo join t_course on t_classinfo.course_id=t_course.id join r_teaching on t_classinfo.class_id=r_teaching.class_id and t_classinfo.course_id=r_teaching.course_id and t_classinfo.class_term=r_teaching.class_term join e_teacher on r_teaching.id=e_teacher.id
+        where e_teacher.id=#{queryDTO.id}
+    </select>
+
+
+    <select id="queryReport" resultMap="StuExperimentProjectReportEntity">
+        select * from r_stu_experiment_project_report where course_id=#{queryDTO.courseId} and class_id=#{queryDTO.classId} and project_id=#{queryDTO.projectId}
+    </select>
+
+    <insert id="addProject">
+        insert into
+            e_experiment_project(id,course_id,class_id,name,project_descrip,deadline)
+        values(
+  (select MAX(e.id)+1 from e_experiment_project as e),#{queryDTO.courseId},#{queryDTO.classId},#{queryDTO.projectName},#{queryDTO.projectDescrip},#{queryDTO.deadline})
+    </insert>
+
+    <insert id="addConfrontation">
+        insert into
+            e_confrontation_exercise(confrontation_id,course_id,class_id,confrontation_name,confrontation_descrip,questionbank_id,answer_time,deadline)
+        values(
+    (select MAX(e.confrontation_id)+1 from e_confrontation_exercise as e),#{queryDTO.courseId},#{queryDTO.classId},#{queryDTO.confrontationName},#{queryDTO.confrontationDescrip},#{queryDTO.questionbankId},#{queryDTO.answerTime},#{queryDTO.deadline})
+    </insert>
+
+
+    <select id="queryProject" resultMap="ExperimentProjectEntity">
+        select * from e_experiment_project where course_id=#{queryDTO.courseId} and class_id=#{queryDTO.classId}
+    </select>
+
+    <select id="queryReportDetail" resultMap="StuExperimentProjectReportEntity">
+        select * from r_stu_experiment_project_report where course_id=#{queryDTO.courseId} and class_id=#{queryDTO.classId} and project_id=#{queryDTO.projectId}
+            and id=#{queryDTO.id} and report_id=#{queryDTO.reportId}
+    </select>
+
+
+    <update id="updateReportGrade">
+        update r_stu_experiment_project_report
+        set grade = #{queryDTO.grade},correct_teacher_id=#{queryDTO.teacherId}
+        where id=#{queryDTO.studentId} and course_id=#{queryDTO.courseId} and class_id=#{queryDTO.classId}
+          and project_id=#{queryDTO.projectId} and report_id=#{queryDTO.reportId}
+    </update>
+
+    <update id="updateScoreWeights">
+        update r_teaching
+        set attendance_weights=#{queryDTO.attendanceWeights},experiment_weights=#{queryDTO.experimentWeights}
+        where id=#{queryDTO.id} and course_id=#{queryDTO.courseId} and class_id=#{queryDTO.classId}
+    </update>
+
+    <select id="queryRescource" resultMap="CourseResourcePublishingEntity">
+        select * from r_course_resource_publishing where course_id=#{queryDTO.courseId} and class_id=#{queryDTO.classId}
+    </select>
+
+    <select id="queryByPage" resultMap="TeacherVO">
+        select
+          id,
+          name,
+          age,
+          sex,
+          phone_number,
+          email,
+          department,
+          notes,
+          user_status,
+          identity
+        from e_teacher
+        <where>
+            <if test="queryDTO.id != null">
+                AND id = #{queryDTO.id}
+            </if>
+            <if test="queryDTO.name != null and queryDTO.name != ''">
+                AND INSTR(name,#{queryDTO.name})
+            </if>
+            <if test="queryDTO.age != null">
+                AND age = #{queryDTO.age}
+            </if>
+            <if test="queryDTO.sex != null and queryDTO.sex != ''">
+                AND sex = #{queryDTO.sex}
+            </if>
+            <if test="queryDTO.phoneNumber != null and queryDTO.phoneNumber != ''">
+                AND phone_number = #{queryDTO.phoneNumber}
+            </if>
+            <if test="queryDTO.email != null and queryDTO.email != ''">
+                AND email = #{queryDTO.email}
+            </if>
+            <if test="queryDTO.department != null and queryDTO.department != ''">
+                AND INSTR(department,#{queryDTO.department})
+            </if>
+            <if test="queryDTO.notes != null and queryDTO.notes != ''">
+                AND INSTR(notes,#{queryDTO.notes})
+            </if>
+            <if test="queryDTO.userStatus != null and queryDTO.userStatus != ''">
+                AND INSTR(user_status,#{queryDTO.userStatus})
+            </if>
+            <if test="queryDTO.identity != null and queryDTO.identity != ''">
+                AND INSTR(identity,#{queryDTO.identity})
+            </if>
+
+            <if test="queryDTO.createTimeBegin != null ">
+                AND create_time &gt;= #{queryDTO.createTimeBegin}
+            </if>
+            <if test="queryDTO.createTimeEnd != null ">
+                AND create_time &lt;= #{queryDTO.createTimeEnd}
+            </if>
+
+            <if test="queryDTO.updateTimeBegin != null ">
+                AND update_time &gt;= #{queryDTO.updateTimeBegin}
+            </if>
+            <if test="queryDTO.updateTimeEnd != null ">
+                AND update_time &lt;= #{queryDTO.updateTimeEnd}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryAllExportData" resultMap="TeacherExcelVO">
+        select
+           id,
+           name,
+           age,
+           sex,
+           phone_number,
+           email,
+           department,
+           notes,
+           user_status,
+           identity
+        from e_teacher
+        <where>
+            <if test="queryDTO.id != null">
+                AND id = #{queryDTO.id}
+            </if>
+            <if test="queryDTO.name != null and queryDTO.name != ''">
+                AND INSTR(name,#{queryDTO.name})
+            </if>
+            <if test="queryDTO.age != null">
+                AND age = #{queryDTO.age}
+            </if>
+            <if test="queryDTO.sex != null and queryDTO.sex != ''">
+                AND sex = #{queryDTO.sex}
+            </if>
+            <if test="queryDTO.phoneNumber != null and queryDTO.phoneNumber != ''">
+                AND phone_number = #{queryDTO.phoneNumber}
+            </if>
+            <if test="queryDTO.email != null and queryDTO.email != ''">
+                AND email = #{queryDTO.email}
+            </if>
+            <if test="queryDTO.department != null and queryDTO.department != ''">
+                AND INSTR(department,#{queryDTO.department})
+            </if>
+            <if test="queryDTO.notes != null and queryDTO.notes != ''">
+                AND INSTR(notes,#{queryDTO.notes})
+            </if>
+            <if test="queryDTO.userStatus != null and queryDTO.userStatus != ''">
+                AND INSTR(user_status,#{queryDTO.userStatus})
+            </if>
+            <if test="queryDTO.identity != null and queryDTO.identity != ''">
+                AND INSTR(identity,#{queryDTO.identity})
+            </if>
+
+            <if test="queryDTO.createTimeBegin != null ">
+                AND create_time &gt;= #{queryDTO.createTimeBegin}
+            </if>
+            <if test="queryDTO.createTimeEnd != null ">
+                AND create_time &lt;= #{queryDTO.createTimeEnd}
+            </if>
+
+            <if test="queryDTO.updateTimeBegin != null ">
+                AND update_time &gt;= #{queryDTO.updateTimeBegin}
+            </if>
+            <if test="queryDTO.updateTimeEnd != null ">
+                AND update_time &lt;= #{queryDTO.updateTimeEnd}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryBatchExportData" resultMap="TeacherExcelVO">
+        select
+         id,
+         name,
+         age,
+         sex,
+         phone_number,
+         email,
+         department,
+         notes,
+         user_status,
+         identity
+        from e_teacher
+        where id in
+        <foreach collection="idList" open="(" close=")" separator="," item="item">
+            #{item}
+        </foreach>
+    </select>
+
+    <delete id="deleteById">
+        delete from e_teacher where id = #{id}
+    </delete>
+
+    <delete id="deleteByIdList">
+        delete from e_teacher where id in
+        <foreach collection="idList" open="(" close=")" separator="," item="item">
+            #{item}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Service.module.business.stuConfrontationExercise.dao.StuConfrontationExerciseDao">
+
+    <resultMap id="StuConfrontationExerciseVO" type="Service.module.business.stuConfrontationExercise.domain.vo.StuConfrontationExerciseVO"></resultMap>
+    <resultMap id="StuConfrontationExerciseExcelVO" type="Service.module.business.stuConfrontationExercise.domain.vo.StuConfrontationExerciseExcelVO"></resultMap>
+    <resultMap id="StuConfrontationExerciseEntity" type="Service.module.business.stuConfrontationExercise.domain.entity.StuConfrontationExerciseEntity"></resultMap>
+    <resultMap id="QuestionsEntity" type="Service.module.business.questions.domain.entity.QuestionsEntity"></resultMap>
+    <resultMap id="StuConfrontationExerciseQueryQuestionVO" type="Service.module.business.stuConfrontationExercise.domain.vo.StuConfrontationExerciseQueryQuestionVO"></resultMap>
+    <resultMap id="StuConfrontationExerciseQueryListVO" type="Service.module.business.stuConfrontationExercise.domain.vo.StuConfrontationExerciseQueryListVO"></resultMap>
+    <resultMap id="ConfrontationExerciseEntity" type="Service.module.business.confrontationExercise.domain.entity.ConfrontationExerciseEntity"></resultMap>
+
+
+
+    <select id="queryConfrontationQuestion" resultMap="StuConfrontationExerciseQueryQuestionVO">
+        select e_questions.question,e_questions.`options`,e_questions.solution from e_questions, e_questionBank where (e_questions.question_id=e_questionBank.question1_id or e_questions.question_id=e_questionBank.question2_id or e_questions.question_id=e_questionBank.question3_id)
+                                                                                                                  and e_questionBank.id=(select questionbank_id from e_confrontation_exercise as e1 where e1.confrontation_id=#{queryDTO.confrontationId} )
+    </select>
+
+    <select id="queryConfrontationList" resultMap="ConfrontationExerciseEntity">
+        select * from e_confrontation_exercise where e_confrontation_exercise.course_id=#{queryDTO.courseId} and e_confrontation_exercise.class_id=#{queryDTO.classId}
+    </select>
+
+
+    <select id="queryByPage" resultMap="StuConfrontationExerciseVO">
+        select
+          confrontation_id,
+          confrontation_name,
+          course_id,
+          class_id,
+          confrontation_descrip,
+          questionbank_id,
+          answer_time,
+          deadline,
+          student_id,
+          student_answer1,
+          student_answer2,
+          student_answer3
+        from r_stu_confrontation_exercise
+        <where>
+            <if test="queryDTO.confrontationId != null">
+                AND confrontation_id = #{queryDTO.confrontationId}
+            </if>
+            <if test="queryDTO.confrontationName != null and queryDTO.confrontationName != ''">
+                AND INSTR(confrontation_name,#{queryDTO.confrontationName})
+            </if>
+            <if test="queryDTO.courseId != null">
+                AND course_id = #{queryDTO.courseId}
+            </if>
+            <if test="queryDTO.classId != null">
+                AND class_id = #{queryDTO.classId}
+            </if>
+            <if test="queryDTO.confrontationDescrip != null and queryDTO.confrontationDescrip != ''">
+                AND INSTR(confrontation_descrip,#{queryDTO.confrontationDescrip})
+            </if>
+            <if test="queryDTO.questionbankId != null">
+                AND questionbank_id = #{queryDTO.questionbankId}
+            </if>
+            <if test="queryDTO.answerTime != null and queryDTO.answerTime != ''">
+                AND INSTR(answer_time,#{queryDTO.answerTime})
+            </if>
+            <if test="queryDTO.deadline != null and queryDTO.deadline != ''">
+                AND INSTR(deadline,#{queryDTO.deadline})
+            </if>
+            <if test="queryDTO.studentId != null">
+                AND student_id = #{queryDTO.studentId}
+            </if>
+            <if test="queryDTO.studentAnswer1 != null and queryDTO.studentAnswer1 != ''">
+                AND INSTR(student_answer1,#{queryDTO.studentAnswer1})
+            </if>
+            <if test="queryDTO.studentAnswer2 != null and queryDTO.studentAnswer2 != ''">
+                AND INSTR(student_answer2,#{queryDTO.studentAnswer2})
+            </if>
+            <if test="queryDTO.studentAnswer3 != null and queryDTO.studentAnswer3 != ''">
+                AND INSTR(student_answer3,#{queryDTO.studentAnswer3})
+            </if>
+
+            <if test="queryDTO.createTimeBegin != null ">
+                AND create_time &gt;= #{queryDTO.createTimeBegin}
+            </if>
+            <if test="queryDTO.createTimeEnd != null ">
+                AND create_time &lt;= #{queryDTO.createTimeEnd}
+            </if>
+
+            <if test="queryDTO.updateTimeBegin != null ">
+                AND update_time &gt;= #{queryDTO.updateTimeBegin}
+            </if>
+            <if test="queryDTO.updateTimeEnd != null ">
+                AND update_time &lt;= #{queryDTO.updateTimeEnd}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryAllExportData" resultMap="StuConfrontationExerciseExcelVO">
+        select
+           confrontation_id,
+           confrontation_name,
+           course_id,
+           class_id,
+           confrontation_descrip,
+           questionbank_id,
+           answer_time,
+           deadline,
+           student_id,
+           student_answer1,
+           student_answer2,
+           student_answer3
+        from r_stu_confrontation_exercise
+        <where>
+            <if test="queryDTO.confrontationId != null">
+                AND confrontation_id = #{queryDTO.confrontationId}
+            </if>
+            <if test="queryDTO.confrontationName != null and queryDTO.confrontationName != ''">
+                AND INSTR(confrontation_name,#{queryDTO.confrontationName})
+            </if>
+            <if test="queryDTO.courseId != null">
+                AND course_id = #{queryDTO.courseId}
+            </if>
+            <if test="queryDTO.classId != null">
+                AND class_id = #{queryDTO.classId}
+            </if>
+            <if test="queryDTO.confrontationDescrip != null and queryDTO.confrontationDescrip != ''">
+                AND INSTR(confrontation_descrip,#{queryDTO.confrontationDescrip})
+            </if>
+            <if test="queryDTO.questionbankId != null">
+                AND questionbank_id = #{queryDTO.questionbankId}
+            </if>
+            <if test="queryDTO.answerTime != null and queryDTO.answerTime != ''">
+                AND INSTR(answer_time,#{queryDTO.answerTime})
+            </if>
+            <if test="queryDTO.deadline != null and queryDTO.deadline != ''">
+                AND INSTR(deadline,#{queryDTO.deadline})
+            </if>
+            <if test="queryDTO.studentId != null">
+                AND student_id = #{queryDTO.studentId}
+            </if>
+            <if test="queryDTO.studentAnswer1 != null and queryDTO.studentAnswer1 != ''">
+                AND INSTR(student_answer1,#{queryDTO.studentAnswer1})
+            </if>
+            <if test="queryDTO.studentAnswer2 != null and queryDTO.studentAnswer2 != ''">
+                AND INSTR(student_answer2,#{queryDTO.studentAnswer2})
+            </if>
+            <if test="queryDTO.studentAnswer3 != null and queryDTO.studentAnswer3 != ''">
+                AND INSTR(student_answer3,#{queryDTO.studentAnswer3})
+            </if>
+
+            <if test="queryDTO.createTimeBegin != null ">
+                AND create_time &gt;= #{queryDTO.createTimeBegin}
+            </if>
+            <if test="queryDTO.createTimeEnd != null ">
+                AND create_time &lt;= #{queryDTO.createTimeEnd}
+            </if>
+
+            <if test="queryDTO.updateTimeBegin != null ">
+                AND update_time &gt;= #{queryDTO.updateTimeBegin}
+            </if>
+            <if test="queryDTO.updateTimeEnd != null ">
+                AND update_time &lt;= #{queryDTO.updateTimeEnd}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryBatchExportData" resultMap="StuConfrontationExerciseExcelVO">
+        select
+         confrontation_id,
+         confrontation_name,
+         course_id,
+         class_id,
+         confrontation_descrip,
+         questionbank_id,
+         answer_time,
+         deadline,
+         student_id,
+         student_answer1,
+         student_answer2,
+         student_answer3
+        from r_stu_confrontation_exercise
+        where id in
+        <foreach collection="idList" open="(" close=")" separator="," item="item">
+            #{item}
+        </foreach>
+    </select>
+
+    <delete id="deleteById">
+        delete from r_stu_confrontation_exercise where id = #{id}
+    </delete>
+
+    <delete id="deleteByIdList">
+        delete from r_stu_confrontation_exercise where id in
+        <foreach collection="idList" open="(" close=")" separator="," item="item">
+            #{item}
+        </foreach>
+    </delete>
+
+</mapper>
