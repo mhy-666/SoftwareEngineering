@@ -40,11 +40,11 @@ public class StudentController extends BaseController {
     private StudentService studentService;
 
 
-    @ApiOperation(value = "获取对抗练习作答情况",notes = "@author mhy")
-    @PostMapping("/confront/answer")
-    public ResponseDTO<List<StuConfrontationExerciseAnswerVO>> queryConfrontResult(@RequestBody StudentSubmitConfrontationDTO queryDTO) {
-        return studentService.queryConfrontResult(queryDTO);
-    }
+//    @ApiOperation(value = "获取对抗练习作答情况",notes = "@author mhy")
+//    @PostMapping("/confront/answer")
+//    public ResponseDTO<List<StuConfrontationExerciseAnswerVO>> queryConfrontResult(@RequestBody StudentSubmitConfrontationDTO queryDTO) {
+//        return studentService.queryConfrontResult(queryDTO);
+//    }
 
     @ApiOperation(value = "报告成绩",notes = "@author mhy")
     @PostMapping("/student/getreportgrades")
@@ -52,11 +52,11 @@ public class StudentController extends BaseController {
         return studentService.queryreportGrade(queryDTO);
     }
 
-    @ApiOperation(value = "提交对抗练习",notes = "@author mhy")
-    @PostMapping("/student/answerconfront")
-    public ResponseDTO<String> addConfront(@RequestBody StudentSubmitConfrontationDTO queryDTO) {
-        return studentService.addConfront(queryDTO);
-    }
+//    @ApiOperation(value = "提交对抗练习",notes = "@author mhy")
+//    @PostMapping("/student/answerconfront")
+//    public ResponseDTO<String> addConfront(@RequestBody StudentSubmitConfrontationDTO queryDTO) {
+//        return studentService.addConfront(queryDTO);
+//    }
 
 
 

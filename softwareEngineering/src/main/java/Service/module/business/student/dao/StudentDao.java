@@ -39,13 +39,13 @@ public interface StudentDao extends BaseMapper<StudentEntity> {
 
 
 
-    List<StuConfrontationExerciseAnswerVO>queryConfrontResult(@Param("queryDTO") StudentSubmitConfrontationDTO queryDTO);
+    //List<StuConfrontationExerciseAnswerVO>queryConfrontResult(@Param("queryDTO") StudentSubmitConfrontationDTO queryDTO);
 
-    void updateSubmitConfrontation(@Param("queryDTO") StudentSubmitConfrontationDTO queryDTO);
+    //void updateSubmitConfrontation(@Param("queryDTO") StudentSubmitConfrontationDTO queryDTO);
 
     List<StuExperimentProjectReportEntity>queryReportGrade(@Param("queryDTO") StudentQueryReportDetailDTO queryDTO);
 
-    void SubmitConfrontation(@Param("queryDTO") StudentSubmitConfrontationDTO queryDTO);
+    //void SubmitConfrontation(@Param("queryDTO") StudentSubmitConfrontationDTO queryDTO);
 
 
     List<StudentGetCourseVO> queryCourse(@Param("queryDTO") StudentGetCourseDTO queryDTO);

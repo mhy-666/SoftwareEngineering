@@ -13,7 +13,7 @@
 
 
     <select id="queryConfrontationQuestion" resultMap="StuConfrontationExerciseQueryQuestionVO">
-        select e_questions.question,e_questions.`options`,e_questions.solution from e_questions, e_questionBank where (e_questions.question_id=e_questionBank.question1_id or e_questions.question_id=e_questionBank.question2_id or e_questions.question_id=e_questionBank.question3_id)
+        select e_questions.questions_id,e_questions.question,e_questions.`options`,e_questions.solution from e_questions, e_questionBank where (e_questions.question_id=e_questionBank.question1_id or e_questions.question_id=e_questionBank.question2_id or e_questions.question_id=e_questionBank.question3_id)
                                                                                                                   and e_questionBank.id=(select questionbank_id from e_confrontation_exercise as e1 where e1.confrontation_id=#{queryDTO.confrontationId} )
     </select>
 

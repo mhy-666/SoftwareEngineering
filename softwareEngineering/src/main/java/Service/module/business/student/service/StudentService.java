@@ -42,32 +42,32 @@ public class StudentService {
     @Autowired
     private StudentDao studentDao;
 
-    /**
-     * 获取对抗练习作答情况
-     * @author mhy
-     * @date 2021-12-10 10:19:19
-     * @return
-     */
-    public ResponseDTO<List<StuConfrontationExerciseAnswerVO>> queryConfrontResult(StudentSubmitConfrontationDTO queryDTO) {
-
-        List<StuConfrontationExerciseAnswerVO> VOList = studentDao.queryConfrontResult(queryDTO);
-
-        List<StuConfrontationExerciseAnswerVO> voList = VOList.stream().map(e -> {
-            StuConfrontationExerciseAnswerVO vo = new StuConfrontationExerciseAnswerVO();
-            vo.setStudentId(e.getStudentId());
-            vo.setTotals(e.getTotals());
-            vo.setRank(e.getRank());
-            vo.setAnswertime(e.getAnswertime());
-            vo.setQuestion(e.getQuestion());
-            vo.setOptions(e.getOptions());
-            vo.setSolution(e.getSolution());
-            vo.setStudentAnswer(e.getStudentAnswer());
-            vo.setQuestionId(e.getQuestionId());
-            return vo;
-        }).collect(Collectors.toList());
-
-        return ResponseDTO.succData(voList);
-    }
+//    /**
+//     * 获取对抗练习作答情况
+//     * @author mhy
+//     * @date 2021-12-10 10:19:19
+//     * @return
+//     */
+//    public ResponseDTO<List<StuConfrontationExerciseAnswerVO>> queryConfrontResult(StudentSubmitConfrontationDTO queryDTO) {
+//
+//        List<StuConfrontationExerciseAnswerVO> VOList = studentDao.queryConfrontResult(queryDTO);
+//
+//        List<StuConfrontationExerciseAnswerVO> voList = VOList.stream().map(e -> {
+//            StuConfrontationExerciseAnswerVO vo = new StuConfrontationExerciseAnswerVO();
+//            vo.setStudentId(e.getStudentId());
+//            vo.setTotals(e.getTotals());
+//            vo.setRank(e.getRank());
+//            vo.setAnswertime(e.getAnswertime());
+//            vo.setQuestion(e.getQuestion());
+//            vo.setOptions(e.getOptions());
+//            vo.setSolution(e.getSolution());
+//            vo.setStudentAnswer(e.getStudentAnswer());
+//            vo.setQuestionId(e.getQuestionId());
+//            return vo;
+//        }).collect(Collectors.toList());
+//
+//        return ResponseDTO.succData(voList);
+//    }
 
     /**
      * 查询报告成绩
@@ -94,16 +94,16 @@ public class StudentService {
     }
 
 
-    /**
-     * 提交对抗练习
-     * @author mhy
-     * @date 2021-12-10 10:19:19
-     */
-    public ResponseDTO<String> addConfront(StudentSubmitConfrontationDTO addDTO) {
-        studentDao.SubmitConfrontation(addDTO);
-        studentDao.updateSubmitConfrontation(addDTO);
-        return ResponseDTO.succ();
-    }
+//    /**
+//     * 提交对抗练习
+//     * @author mhy
+//     * @date 2021-12-10 10:19:19
+//     */
+//    public ResponseDTO<String> addConfront(StudentSubmitConfrontationDTO addDTO) {
+//        studentDao.SubmitConfrontation(addDTO);
+//        studentDao.updateSubmitConfrontation(addDTO);
+//        return ResponseDTO.succ();
+//    }
 
 
 

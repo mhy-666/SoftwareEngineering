@@ -151,15 +151,15 @@ public class TeacherService {
         return ResponseDTO.succ();
     }
 
-    /**
-     * 发布一个对抗练习
-     * @author mhy
-     * @date 2021-12-10 10:19:19
-     */
-    public ResponseDTO<String> addConfrontation(TeacherAddConfrontationDTO addDTO) {
-        teacherDao.addConfrontation(addDTO);
-        return ResponseDTO.succ();
-    }
+//    /**
+//     * 发布一个对抗练习
+//     * @author mhy
+//     * @date 2021-12-10 10:19:19
+//     */
+//    public ResponseDTO<String> addConfrontation(TeacherAddConfrontationDTO addDTO) {
+//        teacherDao.addConfrontation(addDTO);
+//        return ResponseDTO.succ();
+//    }
 
 
 

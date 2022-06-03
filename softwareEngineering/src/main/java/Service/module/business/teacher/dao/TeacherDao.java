@@ -43,7 +43,7 @@ public interface TeacherDao extends BaseMapper<TeacherEntity> {
     void addCourse3(@Param("queryDTO") TeacherAddCourseDTO queryDTO);
 
 
-    void addConfrontation(@Param("queryDTO") TeacherAddConfrontationDTO queryDTO);
+//    void addConfrontation(@Param("queryDTO") TeacherAddConfrontationDTO queryDTO);
 
     List<TeacherQueryCourseVO>queryCourse(@Param("queryDTO") TeacherQueryCourseDTO queryDTO);
 

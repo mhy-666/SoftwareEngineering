@@ -76,12 +76,12 @@ public class TeacherController extends BaseController {
     public ResponseDTO<String> addProject(@RequestBody TeacherAddProjectDTO queryDTO) {
         return teacherService.addProject(queryDTO);
     }
-
-    @ApiOperation(value = "发布对抗练习",notes = "@author mhy")
-    @PostMapping("/teacher/newagainst")
-    public ResponseDTO<String> addConfrontation(@RequestBody TeacherAddConfrontationDTO queryDTO) {
-        return teacherService.addConfrontation(queryDTO);
-    }
+//
+//    @ApiOperation(value = "发布对抗练习",notes = "@author mhy")
+//    @PostMapping("/teacher/newagainst")
+//    public ResponseDTO<String> addConfrontation(@RequestBody TeacherAddConfrontationDTO queryDTO) {
+//        return teacherService.addConfrontation(queryDTO);
+//    }
 
     @ApiOperation(value = "获取实验项目列表",notes = "@author mhy")
     @PostMapping("/teacher/getproject")
